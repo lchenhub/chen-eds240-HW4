@@ -58,7 +58,7 @@ wildfire <- janitor::clean_names(wildfire_original) %>%
 ##                                  plot #1                                 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Try a histogram
+# Try a histogram with facet wrap
 wildfire %>% 
   #mutate(month_name = factor(month_name, levels = month.name)) %>%  #organize month names
   ggplot(aes(x = ig_date)) +
@@ -68,6 +68,7 @@ wildfire %>%
   scale_fill_manual(values = c("#2C5374", "#ADD8E6", "#8B3A3A"))
 
 ```
+
 ```{r}
 
 #| eval: true
