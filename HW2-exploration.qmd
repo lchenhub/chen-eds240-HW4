@@ -120,19 +120,42 @@ wildfire %>%
 
 1. *What have you learned about your data? Have any potentially interesting patterns emerged? (5-8 sentences)*
 ```
-From the initial data exploration, I learned that prescribed burns is considered a type of wildfire. I did not think of these as being in the same category before. The same can be said for wildland fire use burn types, which I would like to look into more. There are a good amount of unknown fire types that I wish were less so. Lastly, there is a clear trend of increased wildfire events in the last twenty years, which really sucks, in scientific terms. The histogram shows this pretty clearly. 
+From the initial data exploration, I learned that prescribed burns is considered 
+a type of wildfire. I did not think of these as being in the same category 
+before. The same can be said for wildland fire use burn types, which I would 
+like to look into more. There are a good amount of unknown fire types that I 
+wish were less so. Lastly, there is a clear trend of increased wildfire events 
+in the last twenty years, which really sucks, in scientific terms. The histogram 
+shows this pretty clearly. 
 
 ```
 
 2. *In HW #1, you outlined some questions that you wanted to answer using these data. Have you made any strides towards answering those questions? If yes, how so? If no, what next steps do you need to take (e.g. I need to create X plot type, I still need to track down Y data, I need to restructure existing data so that you can visualize it in Z ways, etc.)? (8-12 sentences)*
 ```
-In assignment 1, I was hopeful that I could compare this dataset against US policy data to see if the creation of wildfire policies have had an impact on the actual occurances of wildfires in CA. However, I realized that the data for polcies was not extensive enough to be actually helpful. There were only like 2 observations or so in that dataset. I decided to keep things contained and use this wildfire dataset only. It is possible that I can continue tracking down data. However, the reality may be that wildfire polciies are not that plentiful, so it may be hard to analyze in the way I want to here. I think that these initial data explorations have provided an initial sense of when burns are increasing. So perhaps I will rephrase my question. I think by looking at the geospatial information next, I should be able to find more interesting trends. I am guessing there will be trends towards the areas where I suspect fires have happened, where there are increased wildland and human interfaces. 
+In assignment 1, I was hopeful that I could compare this dataset against US 
+policy data to see if the creation of wildfire policies have had an impact on 
+the actual occurances of wildfires in CA. However, I realized that the data for 
+polcies was not extensive enough to be actually helpful. There were only like 2 
+observations or so in that dataset. I decided to keep things contained and use 
+this wildfire dataset only. It is possible that I can continue tracking down 
+data. However, the reality may be that wildfire polciies are not that plentiful, 
+so it may be hard to analyze in the way I want to here. I think that these 
+initial data explorations have provided an initial sense of when burns are 
+increasing. So perhaps I will rephrase my question. I think by looking at the 
+geospatial information next, I should be able to find more interesting trends. 
+I am guessing there will be trends towards the areas where I suspect fires have 
+happened, where there are increased wildland and human interfaces. 
 
 ```
 
 3. *What challenges do you foresee encountering with your data? These can be data wrangling and / or visualization challenges. (4-6 sentences)*
 ```
-I foresee the challenge being able to relay the wildfire incident types with something useful, like location or dates. The dates starting from 1985 does seem to be a potential challenge as well. I think I will play around with the locations a little more too to see if I can gather more trends from that visualization. There are a lot of values too, which makes creating the plot harder too. I look forward to trying. 
+I foresee the challenge being able to relay the wildfire incident types with 
+something useful, like location or dates. The dates starting from 1985 does 
+seem to be a potential challenge as well. I think I will play around with the 
+locations a little more too to see if I can gather more trends from that 
+visualization. There are a lot of values too, which makes creating the plot 
+harder too. I look forward to trying. 
 
 ```
 
