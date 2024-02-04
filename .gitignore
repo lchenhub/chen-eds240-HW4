@@ -2,6 +2,10 @@
 .Rhistory
 .Rapp.history
 
+#ignore data and html files
+/data
+/HW2-exploration.html
+
 # Session Data files
 .RData
 .RDataTmp

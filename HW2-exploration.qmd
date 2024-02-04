@@ -1,0 +1,138 @@
+---
+title: "Homework Assignment #2"
+subtitle: "Part 2"
+author: "Liane Chen"
+date: 2024-02-03
+toc: true
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+```{r setup, include=FALSE}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                    setup                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#..........................load packages.........................
+library(tidyverse)
+library(sf)
+library(dplyr)
+library(lubridate)
+library(janitor)
+library(ggplot2)
+library(naniar)
+
+#..........................import data...........................
+wildfire_original <- st_read("data/mtbs_perims_DD.shp")
+```
+
+```{r}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                wrangle data                              ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+wildfire <- janitor::clean_names(wildfire_original) %>% 
+  
+  #replace the numeric '-99999' code with NA values in order to drop NAs
+  replace_with_na(replace = list(-99999)) %>% 
+  
+  #select columns we are interested in
+  select(incid_name, incid_type, burn_bnd_ac, ig_date, geometry) %>% 
+  
+  #remove NA observations
+  drop_na()
+
+```
+
+
+# Let's do some exploratory visuals! ----
+
+```{r}
+#| eval: true
+#| echo: true
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  plot #1                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Try a histogram
+wildfire %>% 
+  #mutate(month_name = factor(month_name, levels = month.name)) %>%  #organize month names
+  ggplot(aes(x = ig_date)) +
+  geom_histogram(position = "identity", alpha = 0.5, bins = 1) + #by default info is stacked, so let's add position by identity and make it transparent so it's clear
+  facet_wrap(~incid_type) +
+  #adjust bins so you can see better
+  scale_fill_manual(values = c("#2C5374", "#ADD8E6", "#8B3A3A"))
+
+```
+```{r}
+
+#| eval: true
+#| echo: true
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  plot #2                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# try bar plot
+
+wildfire %>% 
+  ggplot(aes(x = burn_bnd_ac, y = incid_type)) + 
+  geom_col(fill = "purple") + 
+  coord_flip()
+```
+
+
+```{r}
+#| eval: true
+#| echo: true
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  plot #3                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#try a violin
+
+wildfire %>% 
+  ggplot(aes(x=incid_type, y=burn_bnd_ac, fill=burn_bnd_ac)) +
+  geom_boxplot() +
+  geom_jitter(color="black", size=0.4, alpha=0.9) 
+
+```
+```{r}
+#| eval: true
+#| echo: true
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  plot #4                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# try histogram
+
+wildfire %>%
+  ggplot( aes(x=ig_date)) +
+    geom_histogram() 
+```
+
+
+1. *What have you learned about your data? Have any potentially interesting patterns emerged? (5-8 sentences)*
+```
+From the initial data exploration, I learned that prescribed burns is considered a type of wildfire. I did not think of these as being in the same category before. The same can be said for wildland fire use burn types, which I would like to look into more. There are a good amount of unknown fire types that I wish were less so. Lastly, there is a clear trend of increased wildfire events in the last twenty years, which really sucks, in scientific terms. The histogram shows this pretty clearly. 
+
+```
+
+2. *In HW #1, you outlined some questions that you wanted to answer using these data. Have you made any strides towards answering those questions? If yes, how so? If no, what next steps do you need to take (e.g. I need to create X plot type, I still need to track down Y data, I need to restructure existing data so that you can visualize it in Z ways, etc.)? (8-12 sentences)*
+```
+In assignment 1, I was hopeful that I could compare this dataset against US policy data to see if the creation of wildfire policies have had an impact on the actual occurances of wildfires in CA. However, I realized that the data for polcies was not extensive enough to be actually helpful. There were only like 2 observations or so in that dataset. I decided to keep things contained and use this wildfire dataset only. It is possible that I can continue tracking down data. However, the reality may be that wildfire polciies are not that plentiful, so it may be hard to analyze in the way I want to here. I think that these initial data explorations have provided an initial sense of when burns are increasing. So perhaps I will rephrase my question. I think by looking at the geospatial information next, I should be able to find more interesting trends. I am guessing there will be trends towards the areas where I suspect fires have happened, where there are increased wildland and human interfaces. 
+
+```
+
+3. *What challenges do you foresee encountering with your data? These can be data wrangling and / or visualization challenges. (4-6 sentences)*
+```
+I foresee the challenge being able to relay the wildfire incident types with something useful, like location or dates. The dates starting from 1985 does seem to be a potential challenge as well. I think I will play around with the locations a little more too to see if I can gather more trends from that visualization. There are a lot of values too, which makes creating the plot harder too. I look forward to trying. 
+
+```
+
