@@ -23,6 +23,10 @@ library(ggplot2)
 library(naniar)
 library(maps)
 library(leaflet)
+library(lubridate)
+library(scales)
+library(jsonlite)
+library(gghighlight)
 
 #..........................import data...........................
 wildfire_original <- st_read("data/mtbs_perims_DD.shp")
@@ -46,21 +50,78 @@ wildfire <- janitor::clean_names(wildfire_original) %>%
 
 ```
 
-Which option do you plan to pursue? Restate your question(s).
+##Which option do you plan to pursue? Restate your question(s). Has this changed at all since HW #1? If yes, how so?
+```
+ANSWER: I plan to puruse option 1, where I will have one question that each of the three visualizations works to answer, where each visualization is meant to reach / serve a different target audience and purpose. To restate, my question is: "How have wildfires changed over time?" Yes, this question has changed, since my first question in HW#1 relied on incorporating a dataset that turned out to be a bust and had very little information in it to extract anything meaningful. 
 
-Has this changed at all since HW #1? If yes, how so?
+```
 
-Explain which variables from your data set(s) you will use to answer your question(s).
+##Explain which variables from your data set(s) you will use to answer your question(s).
+```
+ANSWER: The variables I will use to answer my question include 'ignition date', 'burned area (acres)', and 'incident types'.
+```
 
-Find at least two data visualizations that you could (potentially) borrow / adapt pieces from. Link to them or download and embed them into your .qmd file, and explain which elements you might borrow (e.g. the graphic form, legend design, layout, etc.).
-
-Hand-draw your anticipated three visualizations (option 1) or infographic (option 2). Take a photo of your drawing and embed it in your rendered .qmd file – note that these are not exploratory visualizations, but rather your plan for your final visualizations that you will eventually polish and submit with HW #4.
-
-Mock up your visualizations using code. 
+##Find at least two data visualizations that you could (potentially) borrow / adapt pieces from. Link to them or download and embed them into your .qmd file, and explain which elements you might borrow (e.g. the graphic form, legend design, layout, etc.).
 
 
-What challenges did you encounter or anticipate encountering as you continue to build / iterate on your visualizations in R?
 
-What ggplot extension tools / packages do you need to use to build your visualizations? Are there any that we haven’t covered in class that you’ll be learning how to use for your visualizations?
+##Hand-draw your anticipated three visualizations (option 1) or infographic (option 2). Take a photo of your drawing and embed it in your rendered .qmd file – note that these are not exploratory visualizations, but rather your plan for your final visualizations that you will eventually polish and submit with HW #4.
 
-What feedback do you need from the instructional team and / or your peers to ensure that your intended message is clear?
+
+
+##Mock up your visualizations using code. 
+
+```{r}
+wildfire <- unique(wildfire)
+
+large_wildfire <- filter(wildfire, burn_bnd_ac >= 1000)
+
+# grouped_fire <- group_by(large_wildfire, incid_type, ig_date)
+# 
+# mean_burn_ac <- mean(grouped_fire$burn_bnd_ac, na.rm = TRUE)
+# 
+# summary(large_wildfire$burn_bnd_ac)
+#                        
+# 
+# ggplot(data=grouped_fire, mapping = aes(x=ig_date, y=incid_type)) + geom_point() +
+# geom_smooth(method=lm, se=TRUE) 
+
+
+#+ ggtitle(“Average Size of Wildfires Has
+```
+
+
+```{r}
+#by decade
+
+wildfire$year <- year(wildfire$ig_date)
+
+wildfire_decade <- mutate(wildfire, 
+                          decade = case_when(
+                          year %in% 1980:1989 ~ "1980-1989",
+                          year %in% 2000:2009 ~ "2000-2009", 
+                          year %in% 1990:1999 ~ "1990-1999",
+                          year %in% 2000:2009 ~ "2000-2009", 
+                          year %in% 2010:2019 ~ "2010-2019",
+                          year %in% 2020:2029 ~ "2020-2023",
+                                 TRUE ~ NA_character_
+                          ))
+
+wildfire_decade <- group_by(wildfire_decade, decade, na.rm=TRUE)
+
+ggplot(data=wildfire_decade) + 
+  geom_col(mapping = aes(x=decade, y=burn_bnd_ac), fill="darkred") +
+  scale_y_continuous(name ="Acreages Burned", labels = scales::comma) +
+  theme_minimal()
+```
+
+
+##What challenges did you encounter or anticipate encountering as you continue to build / iterate on your visualizations in R?
+
+
+##What ggplot extension tools / packages do you need to use to build your visualizations? Are there any that we haven’t covered in class that you’ll be learning how to use for your visualizations?
+
+
+##What feedback do you need from the instructional team and / or your peers to ensure that your intended message is clear?
+
+
