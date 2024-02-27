@@ -4,9 +4,9 @@ subtitle: "Part 2"
 author: "Liane Chen"
 date: 2024-02-03
 toc: true
-format: html
-editor_options: 
-  chunk_output_type: console
+format:
+  html:
+    embed-resources: true
 ---
 
 
@@ -24,6 +24,8 @@ library(lubridate)
 library(janitor)
 library(ggplot2)
 library(naniar)
+library(maps)
+library(leaflet)
 
 #..........................import data...........................
 wildfire_original <- st_read("data/mtbs_perims_DD.shp")
@@ -60,9 +62,8 @@ wildfire <- janitor::clean_names(wildfire_original) %>%
 
 # Try a histogram with facet wrap
 wildfire %>% 
-  #mutate(month_name = factor(month_name, levels = month.name)) %>%  #organize month names
   ggplot(aes(x = ig_date)) +
-  geom_histogram(position = "identity", alpha = 0.5, bins = 1) + #by default info is stacked, so let's add position by identity and make it transparent so it's clear
+  geom_histogram(position = "identity", alpha = 0.5, bins = 50) + 
   facet_wrap(~incid_type) +
   #adjust bins so you can see better
   scale_fill_manual(values = c("#2C5374", "#ADD8E6", "#8B3A3A"))
@@ -95,14 +96,15 @@ wildfire %>%
 ##                                  plot #3                                 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#try a violin
-
-wildfire %>% 
-  ggplot(aes(x=incid_type, y=burn_bnd_ac, fill=burn_bnd_ac)) +
-  geom_boxplot() +
-  geom_jitter(color="black", size=0.4, alpha=0.9) 
+#try scatterplot
+ggplot(wildfire, aes(x = ig_date, y = burn_bnd_ac)) + 
+  geom_point(size = 0.5, alpha = 0.3) +
+  labs(x = "Ignition Date", y = "Burned Area (acres)", title = "Historical Wildfire")
 
 ```
+
+
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -115,7 +117,8 @@ wildfire %>%
 
 wildfire %>%
   ggplot( aes(x=ig_date)) +
-    geom_histogram() 
+    geom_histogram(binwidth = 7, fill = "skyblue", color = "black", alpha = 0.7) +
+  labs(x = "Ignition Date", y = "Count", title = "Historical Wildfire")
 ```
 
 
@@ -159,4 +162,3 @@ visualization. There are a lot of values too, which makes creating the plot
 harder too. I look forward to trying. 
 
 ```
-

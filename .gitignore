@@ -5,6 +5,7 @@
 #ignore data and html files
 /data
 /HW2-exploration.html
+/LianeChen-HW2-exploration.html
 
 # Session Data files
 .RData

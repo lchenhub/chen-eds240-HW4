@@ -1,0 +1,66 @@
+---
+title: "Homework Assignment #3"
+author: "Liane Chen"
+date: 2024-02-03
+toc: true
+format:
+  html:
+    embed-resources: true
+---
+
+```{r setup, include=FALSE}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                    setup                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#..........................load packages.........................
+library(tidyverse)
+library(sf)
+library(dplyr)
+library(lubridate)
+library(janitor)
+library(ggplot2)
+library(naniar)
+library(maps)
+library(leaflet)
+
+#..........................import data...........................
+wildfire_original <- st_read("data/mtbs_perims_DD.shp")
+```
+
+```{r}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                wrangle data                              ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+wildfire <- janitor::clean_names(wildfire_original) %>% 
+  
+  #replace the numeric '-99999' code with NA values in order to drop NAs
+  replace_with_na(replace = list(-99999)) %>% 
+  
+  #select columns we are interested in
+  select(incid_name, incid_type, burn_bnd_ac, ig_date, geometry) %>% 
+  
+  #remove NA observations
+  drop_na()
+
+```
+
+Which option do you plan to pursue? Restate your question(s).
+
+Has this changed at all since HW #1? If yes, how so?
+
+Explain which variables from your data set(s) you will use to answer your question(s).
+
+Find at least two data visualizations that you could (potentially) borrow / adapt pieces from. Link to them or download and embed them into your .qmd file, and explain which elements you might borrow (e.g. the graphic form, legend design, layout, etc.).
+
+Hand-draw your anticipated three visualizations (option 1) or infographic (option 2). Take a photo of your drawing and embed it in your rendered .qmd file – note that these are not exploratory visualizations, but rather your plan for your final visualizations that you will eventually polish and submit with HW #4.
+
+Mock up your visualizations using code. 
+
+
+What challenges did you encounter or anticipate encountering as you continue to build / iterate on your visualizations in R?
+
+What ggplot extension tools / packages do you need to use to build your visualizations? Are there any that we haven’t covered in class that you’ll be learning how to use for your visualizations?
+
+What feedback do you need from the instructional team and / or your peers to ensure that your intended message is clear?
