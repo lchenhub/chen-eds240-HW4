@@ -110,7 +110,7 @@ wildfire_decade <- mutate(wildfire,
 wildfire_decade <- group_by(wildfire_decade, decade, na.rm=TRUE)
 
 ggplot(data=wildfire_decade) + 
-  geom_col(mapping = aes(x=decade, y=burn_bnd_ac), fill="darkred") +
+  geom_col(mapping = aes(x=decade, y=burn_bnd_ac), fill="darkred", width=0.8) +
   scale_y_continuous(name ="Acreages Burned", labels = scales::comma) +
   theme_minimal()
 ```
