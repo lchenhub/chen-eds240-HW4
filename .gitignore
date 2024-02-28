@@ -4,6 +4,7 @@
 
 #ignore data and html files
 /data
+/graphics
 /HW2-exploration.html
 /LianeChen-HW2-exploration.html
 
