@@ -32,6 +32,10 @@ library(knitr)
 
 #..........................import data...........................
 wildfire_original <- st_read("data/mtbs_perims_DD.shp")
+
+#.........................formatting.............................
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
 ```{r}
@@ -55,21 +59,38 @@ wildfire <- janitor::clean_names(wildfire_original) %>%
 ##Which option do you plan to pursue? Restate your question(s). Has this changed at all since HW #1? If yes, how so?
 
 ```         
-ANSWER: I plan to puruse option 1, where I will have one question that each of the three visualizations works to answer, where each visualization is meant to reach / serve a different target audience and purpose. To restate, my question is: "How have wildfires in the US changed over time?" Yes, this question has changed, since my first question in HW#1 relied on incorporating a dataset that turned out to be a bust and had very little information in it to extract anything meaningful. This one is more fun though because I can plot data over time and that is intuitive to me. 
+ANSWER: I plan to puruse option 1, where I will have one question that each of 
+the three visualizations works to answer, where each visualization is meant to 
+reach / serve a different target audience and purpose. To restate, my question 
+is: "How have wildfires in the US changed over time?" Yes, this question has 
+changed, since my first question in HW#1 relied on incorporating a dataset that 
+turned out to be a bust and had very little information in it to extract anything 
+meaningful. This one is more fun though because I can plot data over time and 
+that is intuitive to me. 
 ```
 
 ##Explain which variables from your data set(s) you will use to answer your question(s).
 
 ```         
-ANSWER: The variables I will use to answer my question include 'ignition date', 'burned area (acres)', and 'incident types'.
+ANSWER: The variables I will use to answer my question include 'ignition date', 
+'burned area (acres)', and 'incident types'. The reason why I would like to look 
+at these variables is because I think these will provide enough flexibility to 
+include detailed info and enough large groupings to summarize. 
 ```
 
 ##Find at least two data visualizations that you could (potentially) borrow / adapt pieces from. Link to them or download and embed them into your .qmd file, and explain which elements you might borrow (e.g. the graphic form, legend design, layout, etc.).
 
 ```         
-ANSWER: I like how Meghan annotates her plot with further context, while keeping the overall aethetic pretty clean in her hockey plot: https://meghan.rbind.io/blog/2022-02-22-increasing-the-flexibility-and-robustness-of-plots-in-ggplot2/ .I may borrow how she annotates her plot in the lower right corner of the plot. 
+ANSWER: I like how Meghan annotates her plot with further context, while keeping 
+the overall aethetic pretty clean in her hockey plot: https://meghan.rbind.io/blog/2022-02-22-increasing-the-flexibility-and-robustness-
+of-plots-in-ggplot2/ .I may borrow how she annotates her plot in the lower right 
+corner of the plot. 
 
-Another plot that I like is Cedric's historical mobile subscriptions plot here: https://raw.githubusercontent.com/Z3tt/TidyTuesday/main/plots/2020_46/2020_46_HistoricalPhones.png. I am thinking that perhaps this will be a good crossover for the histortical wildfire plots that I am trying to make. Specifically, I like his layout with the world proportions on the right, which I think will work nicely for the incident types, perhaps?
+Another plot that I like is Cedric's historical mobile subscriptions plot here: https://raw.githubusercontent.com/Z3tt/TidyTuesday/main/plots/2020_46/2020_46_
+HistoricalPhones.png. I am thinking that perhaps this will be a good crossover 
+for the histortical wildfire plots that I am trying to make. Specifically, I 
+like his layout with the world proportions on the right, which I think will work 
+nicely for the incident types, perhaps?
 ```
 
 ##Hand-draw your anticipated three visualizations (option 1) or infographic (option 2). Take a photo of your drawing and embed it in your rendered .qmd file -- note that these are not exploratory visualizations, but rather your plan for your final visualizations that you will eventually polish and submit with HW #4.
@@ -197,15 +218,23 @@ ggplot(data=wildfire_decade, width = 4, height = 4) +
 ##What challenges did you encounter or anticipate encountering as you continue to build / iterate on your visualizations in R?
 
 ```
-Some of the other plots I tried including using the spatial data to show geographical data, but that was too spread apart, and creating stacked stream graphs with the decades data, but the class types did not work. I want to continue building out annotations and labels for these current graphs, and anticipate needing to spend time on figuring out the positioning of the text. 
+Some of the other plots I tried including using the spatial data to show 
+geographical data, but that was too spread apart, and creating stacked stream 
+graphs with the decades data, but the class types did not work. I want to 
+continue building out annotations and labels for these current graphs, and 
+anticipate needing to spend time on figuring out the positioning of the text. 
 ```
 
 ##What ggplot extension tools / packages do you need to use to build your visualizations? Are there any that we haven't covered in class that you'll be learning how to use for your visualizations?
 ```
-I used the hrbr package and found some themes that I think are now my favorites, in replacement of theme_minimal. For the next iteration, I want to work more with gghighlight and see if I can call out the top three major fires and add text.
+I used the hrbr package and found some themes that I think are now my favorites, 
+in replacement of theme_minimal. For the next iteration, I want to work more with 
+gghighlight and see if I can call out the top three major fires and add text.
 ```
 
 ##What feedback do you need from the instructional team and / or your peers to ensure that your intended message is clear?
 ```
-I'm having trouble using some of the fill= syntax when there are three variables and could use more tips on how to get the plots to actually plot when this happens. Usually it is two numeric and one categorical. 
+I'm having trouble using some of the fill= syntax when there are three variables 
+and could use more tips on how to get the plots to actually plot when this 
+happens. Usually it is two numeric and one categorical. 
 ```
