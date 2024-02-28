@@ -64,11 +64,10 @@ ANSWER: The variables I will use to answer my question include 'ignition date', 
 
 ##Find at least two data visualizations that you could (potentially) borrow / adapt pieces from. Link to them or download and embed them into your .qmd file, and explain which elements you might borrow (e.g. the graphic form, legend design, layout, etc.).
 
-```
+```         
 ANSWER: I like how Meghan annotates her plot with further context, while keeping the overall aethetic pretty clean in her hockey plot: https://meghan.rbind.io/blog/2022-02-22-increasing-the-flexibility-and-robustness-of-plots-in-ggplot2/ .I may borrow how she annotates her plot in the lower right corner of the plot. 
 
 Another plot that I like is Cedric's historical mobile subscriptions plot here: https://raw.githubusercontent.com/Z3tt/TidyTuesday/main/plots/2020_46/2020_46_HistoricalPhones.png. I am thinking that perhaps this will be a good crossover for the histortical wildfire plots that I am trying to make. Specifically, I like his layout with the world proportions on the right, which I think will work nicely for the incident types, perhaps?
-
 ```
 
 ##Hand-draw your anticipated three visualizations (option 1) or infographic (option 2). Take a photo of your drawing and embed it in your rendered .qmd file -- note that these are not exploratory visualizations, but rather your plan for your final visualizations that you will eventually polish and submit with HW #4.
@@ -76,168 +75,31 @@ Another plot that I like is Cedric's historical mobile subscriptions plot here: 
 ##Mock up your visualizations using code.
 
 ```{r}
+#data exploration and clean up
 wildfire <- unique(wildfire)
 
 large_wildfire <- filter(wildfire, burn_bnd_ac >= 1000)
-
-summary(large_wildfire)
 
 large_wildfire <- na.omit(large_wildfire)
 
 summary(large_wildfire)
 
-# grouped_fire <- group_by(large_wildfire, incid_type, ig_date)
-# 
-# mean_burn_ac <- mean(grouped_fire$burn_bnd_ac, na.rm = TRUE)
-# 
-# summary(large_wildfire$burn_bnd_ac)
-#                        
-# 
-# ggplot(data=grouped_fire, mapping = aes(x=ig_date, y=incid_type)) + geom_point() +
-# geom_smooth(method=lm, se=TRUE) 
-
-
-#+ ggtitle(“Average Size of Wildfires Has
 ```
 
+###Visualization for a general audience 
+In this plot, we will include all of the data points from the large_wildfire dataset, as to trigger more reaction when they see how counts have increased exponentially in later years.
 
-###Visualization for a general audience
-In this plot, we will include more data points from overall wildfire dataset, as to trigger more reaction when 
-they see how counts have increased so much in later years. 
 ```{r}
 large_wildfire %>%
   ggplot( aes(x=ig_date)) +
     geom_histogram(binwidth = 7, fill = "darkred", color = "darkred", alpha = 0.5) +
-  labs(x = "Ignition Date", y = "Count", title = "Wildfire Incident Counts between 1984 and 2023") +
+  labs(x = "Year", y = "Count", title = "US Wildfire Incident Counts between 1984 and 2023") +
   theme_ipsum()
 ```
 
-
-
-
-###Visualization for inclusion in a presentation
-We will group the date into decades, so to make the date information easier to 
-digest within a short amount of time. 
-```{r}
-#by decade
-
-wildfire$year <- year(wildfire$ig_date)
-
-wildfire_decade <- mutate(wildfire, 
-                          decade = case_when(
-                          year %in% 1980:1989 ~ "1980-1989",
-                          year %in% 2000:2009 ~ "2000-2009", 
-                          year %in% 1990:1999 ~ "1990-1999",
-                          year %in% 2000:2009 ~ "2000-2009", 
-                          year %in% 2010:2019 ~ "2010-2019",
-                          year %in% 2020:2029 ~ "2020-2023",
-                                 TRUE ~ NA_character_
-                          ))
-
-wildfire_decade <- group_by(wildfire_decade, decade, na.rm=TRUE)
-
-ggplot(data=wildfire_decade, width = 4, height = 2) + 
-  geom_col(mapping = aes(x=decade, y=burn_bnd_ac), fill="darkred", width=0.8) +
-  scale_y_continuous(name ="Acreages Burned (acres)", labels = scales::comma) +
-  xlab("Decade") +
-  annotate("text", x=Inf, y=Inf, hjust=1, vjust=4.5,
-           label = "*Note that data\nis available only\nthrough year 2023", family = "Avenir") +
-  ggtitle("Wildfire Acreages Burned by Decade") +
-  theme(plot.title = element_text(size = 16, face = "bold", margin = margin(b = 14)),
-        panel.background = element_rect(fill = "white"))  
-        
-```
-
-
-```{r}
-library(hrbrthemes)
-
-# Plot
-ggplot(largest_wildfire, aes(x=xValue, y=yValue)) +
-  geom_area( fill="#69b3a2", alpha=0.4) +
-  geom_line(color="#69b3a2", size=2) +
-  geom_point(size=3, color="#69b3a2") +
-  theme_ipsum() +
-  ggtitle("Evolution of something")
-```
-
-```{r}
-library(ggstream)
-
-# Stacked area chart with smoothing
-largest_wildfire %>% 
-  ggplot(aes(year, burn_bnd_ac, fill = burn_bnd_ac, label=incid_name)) +
-  geom_area()
-  #+ #color = incid_type)) +
-  #geom_stream(streamtype = "ridge", aes(bw= 1)) 
-
-
-```
-
-
-```{r}
-largest_wildfire %>%
-  ggplot(aes(x = year, y = burn_bnd_ac, fill = as.factor(burn_bnd_ac), label = incid_name)) +
-  geom_area(position = "stack") #+
-  geom_text(aes(y = 0, label = incid_name), vjust = 0, hjust = 1, size = 2, color = "black") +
-  scale_fill_continuous(guide = "none") +  # You can customize the color scale
-  labs(title = "Wildfire Data",
-       x = "Year",
-       y = "Burned Area (acres)",
-       fill = "Incident Name") +
-  theme_minimal()
-```
-
-
-
-##What challenges did you encounter or anticipate encountering as you continue to build / iterate on your visualizations in R?
-
-##What ggplot extension tools / packages do you need to use to build your visualizations? Are there any that we haven't covered in class that you'll be learning how to use for your visualizations?
-
-##What feedback do you need from the instructional team and / or your peers to ensure that your intended message is clear?
-
-```{r}
-# load United States state map data
-MainStates <- map_data("state")
-
-CA <- MainStates %>% 
-  filter(region == "california")
-
-largest_wildfire <- large_wildfire %>% 
-  filter(incid_type == "Wildfire") %>% 
-  arrange(desc(burn_bnd_ac)) %>% 
-  slice(1:20)
-
-# add year column to data frame
-largest_wildfire$year <- format(largest_wildfire$ig_date, "%Y")
-
-largest_wildfire <- transform(largest_wildfire, year = as.numeric(year))
-
-largest_wildfire %>%
-  ggplot(aes(x = year, y = burn_bnd_ac, fill = burn_bnd_ac)) +
-  geom_area(position = "stack", fill="darkred") + 
-  scale_fill_continuous(guide = "none") +  
-  labs(title = "Wildfire Incidents over the Years",
-       x = "Year",
-       y = "Burned Area (acres)",
-       fill = "Incident Name") +
-  theme_minimal()
-
-
-
-
-```
-```{r}
-large_wildfire %>%
-  ggplot(aes(x = year, y = burn_bnd_ac, fill = burn_bnd_ac)) +
-  geom_area(position = "stack", fill="darkred") + 
-  scale_fill_continuous(guide = "none") +  
-  labs(title = "Wildfire Incidents over the Years",
-       x = "Year",
-       y = "Burned Area (acres)",
-       fill = "Incident Name") +
-  theme_minimal()
-```
+###Visualization to be included in a report
+This plot includes more statistical information (regressionline) in a 
+streamlined presentation for a technical audience.
 
 ```{r}
 
@@ -251,27 +113,56 @@ large_wildfire %>%
   #geom_area(position = "stack", fill="darkred") + 
   geom_smooth(color="darkred") +
   scale_fill_continuous(guide = "none") +  
-  labs(title = "Wildfire Incidents between 1984 and 2023",
+  labs(title = "US Wildfire Incidents between 1984 and 2023",
        x = "Year",
        y = "Burned Area (acres)") +
-  theme_minimal()
+  theme_ipsum()
 ```
 
-
+###Visualization for inclusion in a presentation
+Next, we will group the date into decades, so to make the information easier to 
+digest for the audience with a shorter amount of time to process.
 
 ```{r}
-US_wildfires <- largest_wildfire %>% 
-  filter(!(incid_name %in% 
-           c("RAILBELT COMPLEX (MINTO FLATS SOUTH)", "CHALKYITSIK COMPLEX", "TAYLOR HIGHWAY COMPLEX (BILLY CREEK)")))
+
+#add a year column 
+wildfire$year <- year(wildfire$ig_date)
+
+#add a column that groups dates into decades
+wildfire_decade <- mutate(wildfire, 
+                          decade = case_when(
+                          year %in% 1980:1989 ~ "1980-1989",
+                          year %in% 2000:2009 ~ "2000-2009", 
+                          year %in% 1990:1999 ~ "1990-1999",
+                          year %in% 2000:2009 ~ "2000-2009", 
+                          year %in% 2010:2019 ~ "2010-2019",
+                          year %in% 2020:2029 ~ "2020-2023",
+                                 TRUE ~ NA_character_
+                          ))
+
+#remove NAs
+wildfire_decade <- group_by(wildfire_decade, decade, na.rm=TRUE)
+
+#plot
+ggplot(data=wildfire_decade, width = 4, height = 4) + 
+  geom_col(mapping = aes(x=decade, y=burn_bnd_ac), fill="darkred", width=0.6) +
+  scale_y_continuous(name ="Acreages Burned (acres)", labels = scales::comma) +
+  xlab("Decade") +
+  annotate("text", x=Inf, y=Inf, hjust=1.3, vjust=6.5, size=2,
+           label = "**Note that data\nis available only\nthrough year 2023", family = "Avenir") +
+  ggtitle("Wildfire Acreages Burned by Decade (1980-2023)") +
+  theme(plot.title = element_text(size = 16, family="Times New Roman", face = "bold", margin = margin(b = 6)),
+        panel.background = element_rect(fill = "white"), plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "inches"))
+        
 ```
 
-```{r}
-ggplot() +
-  geom_polygon(data=CA, aes(x=long, y=lat, group=group),
-                color="black", fill="lightgrey" )+
-  geom_sf(data = US_wildfires, aes(fill = burn_bnd_ac), color="darkred")
 
-##can look up which ones are in alaska and delete from dataframe
-## alterntatively, look up which ones are in CA
+##What challenges did you encounter or anticipate encountering as you continue to build / iterate on your visualizations in R?
 
-```
+##What ggplot extension tools / packages do you need to use to build your visualizations? Are there any that we haven't covered in class that you'll be learning how to use for your visualizations?
+
+##What feedback do you need from the instructional team and / or your peers to ensure that your intended message is clear?
+
+
+
+
